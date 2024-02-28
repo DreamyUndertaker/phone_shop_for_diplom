@@ -1,0 +1,67 @@
+{% extends 'home/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} signin {% endblock %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+  {% else %}
+    <p>Please login to see this page.</p>
+  {% endif %}
+{% endif %}
+
+
+<div class="container-fluid display-6" >
+    <div class="row align-items-center">
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <form method="POST" action="{% url 'login' %}">
+                    <table>
+                        {% csrf_token %}
+                        <tr>
+                          <td>{{ form.username.label_tag }}</td>
+                          <td>{{ form.username }}</td>
+                        </tr>
+                        
+                        <tr>
+                          <td>{{ form.password.label_tag }}</td>
+                          <td>{{ form.password }}</td>
+                        </tr>
+                        </table>
+                        
+                        <input type="submit" value="login" class="btn btn-primary btn-lg"/>
+                        <input type="hidden" name="next" value="{{ next }}" />                
+                </form>
+            </div>
+        </div>
+        
+        <br> <br>
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <div class="">
+                    <a href="{% url 'registration' %}" class="btn btn-primary btn-lg">Или зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-3">
+                {# Assumes you setup the password_reset view in your URLconf #}
+                <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
