@@ -1,20 +1,42 @@
 {% extends "db/layout_db.html" %}
+{%load crispy_forms_tags %}
 {% load static %}
 {% block title %}
     {% if category %}{{ category.title }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
-    <div class="product-detail">
-        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-        <h1>{{ product.name }}</h1>
-        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
-        <p class="price">${{ product.price }}</p>
-        {{ product.description|linebreaks }}
-        <p class="price">${{ product.price }}</p>
-            <form action="{% url 'cart:cart_add' product.id  %}" method="POST">
-                {{ cart_product_form }}
-                {% csrf_token %}
-                <input type="submit" value="Add to cart">
-            </form>
+    <div class="container-fluid">
+        <div class="row justify-content-md-center">
+            <div class="card mb-3" style="max-width: 1000px;">
+                <div class="row g-0">
+                    <div class="col md-4">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" class="img-fluid rounded-sart">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h1 class="card-title">
+                                <p>{{ product.name }}</p>
+                            </h1>
+                            <p class="card-text">
+                                <h2>Категория: <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+                            </p>
+                            <p class="card-text">
+                                <p class="price fs-3">Цена: ${{ product.price }}</p>
+                            </p>
+                            <p class="card-text fs-3">
+                                Описание: <br><span class="fs-3">{{ product.description }}</span>
+                            </p>
+                            <p class="card-text">
+                                <form action="{% url 'cart:cart_add' product.id  %}" method="POST">
+                                    {{ cart_product_form|crispy }}
+                                    {% csrf_token %}
+                                    <input type="submit" value="Add to cart">
+                                </form>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

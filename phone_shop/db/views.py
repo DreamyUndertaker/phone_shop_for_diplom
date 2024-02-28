@@ -28,4 +28,3 @@ def product_detail(request, id, slug):
                                                         'cart_product_form': cart_product_form})
 
 
-# issue  Reverse for 'product_list' not found. 'product_list' is not a valid view function or pattern name.
